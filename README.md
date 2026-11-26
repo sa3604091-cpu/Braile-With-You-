@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -27,6 +28,7 @@
             width: 100%;
             height: 100%;
             margin: 0;
+            padding: 0;
         }
 
         body {
@@ -41,25 +43,37 @@
 
             display: flex;
             flex-direction: column;
+
             height: 100vh;
             height: 100dvh;
         }
 
-        /* ============================= */
-        /* شريط العنوان */
-        /* ============================= */
+        /* ===================================
+           عنوان التطبيق الوحيد
+        =================================== */
 
         #app-header {
             flex: 0 0 58px;
             height: 58px;
             width: 100%;
+
             display: flex;
             align-items: center;
             justify-content: space-between;
+
             padding: 0 12px;
-            background: linear-gradient(90deg, #080808, #151515, #080808);
+
+            background: linear-gradient(
+                90deg,
+                #080808,
+                #151515,
+                #080808
+            );
+
             border-bottom: 2px solid var(--cyan);
+
             box-shadow: 0 3px 15px rgba(0, 243, 255, 0.15);
+
             z-index: 10;
         }
 
@@ -68,7 +82,9 @@
             font-size: 19px;
             font-weight: 900;
             letter-spacing: 0.5px;
+
             text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+
             direction: ltr;
             text-align: left;
             white-space: nowrap;
@@ -78,30 +94,40 @@
             background: var(--purple);
             border: none;
             color: #fff;
+
             padding: 8px 12px;
+
             border-radius: 12px;
             font-weight: bold;
             font-size: 12px;
+
             box-shadow: 0 0 10px var(--purple);
+
             cursor: pointer;
             white-space: nowrap;
         }
 
-        /* ============================= */
-        /* مساحة الكتابة */
-        /* ============================= */
+        /* ===================================
+           مساحة الكتابة
+        =================================== */
 
         #display-section {
             flex: 0 0 22%;
-            min-height: 100px;
+            min-height: 105px;
             max-height: 190px;
+
             width: 100%;
+
             background: var(--glass);
             backdrop-filter: blur(15px);
+
             border-bottom: 2px solid var(--cyan);
+
             padding: 10px;
+
             display: flex;
             flex-direction: column;
+
             overflow: hidden;
         }
 
@@ -109,15 +135,21 @@
             flex: 1;
             min-height: 0;
             width: 100%;
+
             background: transparent;
             border: none;
+
             color: var(--cyan);
             font-size: 22px;
+
             resize: none;
             outline: none;
+
             text-align: right;
+
             text-shadow: 0 0 8px var(--cyan);
             font-weight: bold;
+
             user-select: text;
             -webkit-user-select: text;
             touch-action: auto;
@@ -131,68 +163,92 @@
         #braille-preview {
             flex: 0 0 35px;
             height: 35px;
+
             color: var(--purple);
             font-size: 19px;
+
             border-top: 1px solid #333;
+
             padding-top: 5px;
+
             overflow-x: auto;
             white-space: nowrap;
         }
 
-        /* ============================= */
-        /* لوحة المفاتيح */
-        /* ============================= */
+        /* ===================================
+           لوحة المفاتيح
+        =================================== */
 
         #keyboard-container {
             flex: 1 1 auto;
             min-height: 0;
             width: 100%;
+
             overflow-y: auto;
             overflow-x: hidden;
+
             background: transparent;
+
             overscroll-behavior: contain;
         }
 
         #keyboard-sighted {
             display: grid;
+
             grid-template-columns: repeat(6, minmax(0, 1fr));
+
             gap: 5px;
             padding: 10px;
+
             width: 100%;
         }
 
         #keyboard-blind {
             display: none;
+
             grid-template-columns: repeat(2, minmax(0, 1fr));
+
             gap: 30px;
             padding: 20px;
+
             width: 100%;
         }
 
         .cluster-main {
             background: radial-gradient(circle, #222 0%, #000 100%);
+
             border: 2px solid var(--purple);
             border-radius: 50%;
+
             position: relative;
             aspect-ratio: 1/1;
+
             width: 100%;
             max-width: 180px;
+
             margin: auto;
         }
 
         .sub-key {
             position: absolute;
+
             width: 60px;
             height: 60px;
+
             background: #111;
+
             border: 2px solid var(--cyan);
             border-radius: 50%;
+
             display: flex;
             align-items: center;
             justify-content: center;
+
             font-size: 18px;
             color: #fff;
+
             box-shadow: 0 0 10px var(--cyan);
+
             touch-action: manipulation;
         }
 
@@ -210,13 +266,18 @@
 
         .key-s {
             background: var(--key-bg);
+
             border: 1px solid rgba(0, 243, 255, 0.3);
             border-radius: 8px;
+
             display: flex;
             flex-direction: column;
+
             align-items: center;
             justify-content: center;
+
             min-height: 55px;
+
             cursor: pointer;
         }
 
@@ -230,56 +291,61 @@
             color: var(--purple);
         }
 
-        /* ============================= */
-        /* شريط الأدوات السفلي */
-        /* ============================= */
+        /* ===================================
+           شريط الأدوات - 12 زرًا في صفين
+        =================================== */
 
         #nav-bar {
-            flex: 0 0 100px;
-            min-height: 100px;
+            flex: 0 0 150px;
+            min-height: 150px;
+
             width: 100%;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 9px;
-            padding: 9px 10px;
+
+            display: grid;
+
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            grid-template-rows: repeat(2, minmax(0, 1fr));
+
+            gap: 5px;
+            padding: 7px;
+
             background: #000;
+
             border-top: 2px solid var(--purple);
-            overflow-x: auto;
-            overflow-y: hidden;
+
+            overflow: hidden;
+
             direction: rtl;
-            scrollbar-width: thin;
-            scrollbar-color: var(--purple) #111;
-            overscroll-behavior-x: contain;
-        }
-
-        #nav-bar::-webkit-scrollbar {
-            height: 4px;
-        }
-
-        #nav-bar::-webkit-scrollbar-thumb {
-            background: var(--purple);
-            border-radius: 10px;
         }
 
         .nav-btn {
-            flex: 0 0 76px;
-            min-width: 76px;
-            height: 76px;
+            min-width: 0;
+            width: 100%;
+            height: 100%;
+
             display: flex;
             flex-direction: column;
+
             align-items: center;
             justify-content: center;
+
             gap: 3px;
-            font-size: 11px;
+
+            font-size: 10px;
             color: #fff;
+
             cursor: pointer;
+
             border: 1px solid #292929;
-            border-radius: 12px;
+            border-radius: 10px;
+
             text-align: center;
+
             background: #101010;
-            transition: 0.2s;
+
             line-height: 1.4;
+
+            transition: 0.2s;
         }
 
         .nav-btn:active {
@@ -289,29 +355,40 @@
 
         .nav-btn b {
             color: var(--cyan);
-            font-size: 13px;
+            font-size: 12px;
         }
 
-        /* ============================= */
-        /* النوافذ المنبثقة */
-        /* ============================= */
+        /* ===================================
+           النوافذ المنبثقة
+        =================================== */
 
         .popup-menu {
             position: fixed;
+
             top: 50%;
             left: 50%;
+
             transform: translate(-50%, -50%) scale(0);
+
             width: 90%;
             max-height: 75vh;
+
             overflow-y: auto;
+
             background: rgba(0,0,0,0.95);
+
             border: 2px solid var(--cyan);
             border-radius: 15px;
+
             padding: 15px;
+
             display: grid;
             grid-template-columns: repeat(3, 1fr);
+
             gap: 10px;
+
             z-index: 10001;
+
             transition: 0.2s;
         }
 
@@ -321,33 +398,48 @@
 
         #overlay {
             position: fixed;
+
             top: 0;
             left: 0;
+
             width: 100%;
             height: 100%;
+
             background: rgba(0,0,0,0.7);
+
             z-index: 9999;
+
             display: none;
         }
 
-        /* ============================= */
-        /* نافذة اكتشف اللغة */
-        /* ============================= */
+        /* ===================================
+           نافذة اكتشف اللغة
+        =================================== */
 
         #language-popup {
             position: fixed;
+
             top: 50%;
             left: 50%;
+
             transform: translate(-50%, -50%) scale(0);
+
             width: 88%;
             max-width: 420px;
+
             padding: 20px;
+
             box-sizing: border-box;
+
             background: #080808;
+
             border: 2px solid var(--cyan);
             border-radius: 18px;
+
             z-index: 10003;
+
             transition: .2s;
+
             box-shadow: 0 0 20px var(--purple);
         }
 
@@ -362,29 +454,41 @@
 
         #language-word {
             width: 100%;
+
             box-sizing: border-box;
+
             padding: 13px;
             margin: 12px 0;
+
             background: #151515;
             color: white;
+
             border: 1px solid var(--cyan);
             border-radius: 8px;
+
             font-size: 18px;
             text-align: right;
+
             outline: none;
+
             user-select: text;
             -webkit-user-select: text;
+
             touch-action: auto;
         }
 
         .language-action {
             width: 100%;
+
             padding: 12px;
             margin-top: 8px;
+
             border: 0;
             border-radius: 8px;
+
             background: var(--purple);
             color: white;
+
             font-size: 16px;
             font-weight: bold;
         }
@@ -396,11 +500,12 @@
             text-align: center;
         }
 
-        /* ============================= */
-        /* توافق الشاشات الصغيرة */
-        /* ============================= */
+        /* ===================================
+           الشاشات الصغيرة
+        =================================== */
 
         @media (max-width: 380px) {
+
             #app-title {
                 font-size: 16px;
             }
@@ -428,17 +533,17 @@
             }
 
             #nav-bar {
-                flex-basis: 92px;
-                min-height: 92px;
+                flex-basis: 140px;
+                min-height: 140px;
+                gap: 4px;
+                padding: 5px;
             }
 
             .nav-btn {
-                flex-basis: 70px;
-                min-width: 70px;
-                height: 70px;
-                font-size: 10px;
+                font-size: 9px;
             }
         }
+
     </style>
 </head>
 
@@ -446,7 +551,7 @@
 
     <div id="overlay"></div>
 
-    <!-- شريط العنوان -->
+    <!-- عنوان التطبيق الوحيد -->
 
     <header id="app-header" onclick="event.stopPropagation()">
 
@@ -461,7 +566,7 @@
 
     </header>
 
-    <!-- مساحة الكتابة -->
+    <!-- مساحة النص العربي وبرايل -->
 
     <div id="display-section" onclick="event.stopPropagation()">
 
@@ -487,92 +592,138 @@
 
     </div>
 
-    <!-- شريط الأدوات السفلي: جميع الأزرار الأصلية -->
+    <!-- شريط الأدوات -->
 
     <div id="nav-bar" onclick="event.stopPropagation()">
 
+        <!-- 1 الأرقام -->
+
         <div class="nav-btn"
              onclick="unifiedControl(this, () => openPopup('pop-nums', 'الأرقام'), 'أرقام')">
-            🔢<br>أرقام<br><b>⠼</b>
+            🔢
+            <br>أرقام
+            <b>⠼</b>
         </div>
+
+        <!-- 2 التشكيل -->
 
         <div class="nav-btn"
              onclick="unifiedControl(this, () => openPopup('pop-tashkeel', 'التشكيل'), 'تشكيل')">
-            ✨<br>تشكيل<br><b>⠠</b>
+            ✨
+            <br>تشكيل
+            <b>⠠</b>
         </div>
+
+        <!-- 3 الترقيم -->
 
         <div class="nav-btn"
              onclick="unifiedControl(this, () => openPopup('pop-punct', 'علامات الترقيم'), 'ترقيم')">
-            ❓<br>ترقيم<br><b>⠦</b>
+            ❓
+            <br>ترقيم
+            <b>⠦</b>
         </div>
+
+        <!-- 4 الهمزات -->
 
         <div class="nav-btn"
              onclick="unifiedControl(this, () => openPopup('pop-hamzas', 'الهمزات'), 'همزات')">
-            ء<br>همزات<br><b>⠄</b>
+            ء
+            <br>همزات
+            <b>⠄</b>
         </div>
+
+        <!-- 5 الحذف -->
 
         <div class="nav-btn"
              onclick="unifiedControl(this, handleBackspace, 'حذف')"
              style="color:var(--red)">
-            🔙<br>حذف<br><b>⠡</b>
+            🔙
+            <br>حذف
+            <b>⠡</b>
         </div>
+
+        <!-- 6 نطق النص -->
 
         <div class="nav-btn"
              onclick="unifiedControl(this, speakAll, 'نطق النص')">
-            🔊<br>نطق النص
+            🔊
+            <br>نطق النص
         </div>
+
+        <!-- 7 النسخ -->
 
         <div class="nav-btn"
              onclick="unifiedControl(this, handleCopy, 'نسخ')">
-            📋<br>نسخ
+            📋
+            <br>نسخ
         </div>
+
+        <!-- 8 مسح الكل -->
 
         <div class="nav-btn"
              onclick="unifiedControl(this, handleClearAll, 'مسح الكل')">
-            🗑️<br>مسح الكل
+            🗑️
+            <br>مسح الكل
         </div>
+
+        <!-- 9 Word -->
 
         <div class="nav-btn"
              onclick="unifiedControl(this, handleExport, 'حفظ كملف وورد')">
-            💾<br>Word
+            💾
+            <br>Word
         </div>
+
+        <!-- 10 المسافة -->
 
         <div class="nav-btn"
              onclick="unifiedControl(this, handleSpace, 'مسافة')"
              style="background:var(--cyan); color:#000;">
-            ␣<br>مسافة
+            ␣
+            <br>مسافة
         </div>
 
-        <!-- زر عد نقاط برايل -->
+        <!-- 11 عد نقاط برايل -->
 
         <div class="nav-btn"
              onclick="unifiedControl(this, speakBrailleCount, 'عدّ نقاط برايل')">
-            ⠿<br>عدّ نقاط برايل
+            ⠿
+            <br>عدّ نقاط برايل
         </div>
 
-        <!-- زر اكتشف اللغة -->
+        <!-- 12 اكتشف اللغة -->
 
         <div class="nav-btn"
              onclick="unifiedControl(this, openLanguagePopup, 'اكتشف اللغة')">
-            📖<br>اكتشف اللغة
+            📖
+            <br>اكتشف اللغة
             <b>المعجم الوسيط</b>
         </div>
 
     </div>
 
-    <!-- النوافذ المنبثقة الأصلية -->
+    <!-- النوافذ المنبثقة -->
 
-    <div id="pop-nums" class="popup-menu" onclick="event.stopPropagation()"></div>
+    <div id="pop-nums"
+         class="popup-menu"
+         onclick="event.stopPropagation()"></div>
 
-    <div id="pop-tashkeel" class="popup-menu" onclick="event.stopPropagation()"></div>
+    <div id="pop-tashkeel"
+         class="popup-menu"
+         onclick="event.stopPropagation()"></div>
 
-    <div id="pop-punct" class="popup-menu" onclick="event.stopPropagation()"></div>
+    <div id="pop-punct"
+         class="popup-menu"
+         onclick="event.stopPropagation()"></div>
 
-    <div id="pop-hamzas" class="popup-menu" onclick="event.stopPropagation()"></div>
+    <div id="pop-hamzas"
+         class="popup-menu"
+         onclick="event.stopPropagation()"></div>
 
     <!-- نافذة اكتشف اللغة -->
 
-    <div id="language-popup" onclick="event.stopPropagation()">
+    <div id="language-popup"
+         onclick="event.stopPropagation()">
 
         <h3>📖 اكتشف اللغة</h3>
 
@@ -606,6 +757,10 @@
 
 <script>
 
+    /* ===================================
+       خرائط الحروف
+    =================================== */
+
     const CHARS = {
         'ا': '⠁', 'ب': '⠃', 'ت': '⠞', 'ث': '⠹',
         'ج': '⠚', 'ح': '⠱', 'خ': '⠭', 'د': '⠙',
@@ -619,30 +774,59 @@
     };
 
     const HAMZAS = {
-        'أ': '⠁⠃', 'إ': '⠌', 'ؤ': '⠳',
-        'ئ': '⠽', 'ء': '⠄', 'آ': '⠜'
+        'أ': '⠁⠃',
+        'إ': '⠌',
+        'ؤ': '⠳',
+        'ئ': '⠽',
+        'ء': '⠄',
+        'آ': '⠜'
     };
 
     const TASHKEEL = {
-        'َ': '⠂', 'ُ': '⠕', 'ِ': '⠐', 'ْ': '⠒',
-        'ً': '⠘', 'ٌ': '⠰', 'ٍ': '⠡', 'ّ': '⠠⠠'
+        'َ': '⠂',
+        'ُ': '⠕',
+        'ِ': '⠐',
+        'ْ': '⠒',
+        'ً': '⠘',
+        'ٌ': '⠰',
+        'ٍ': '⠡',
+        'ّ': '⠠⠠'
     };
 
     const PUNCT = {
-        '.': '⠲', '،': '⠂', '؟': '⠦', '!': '⠖',
-        '(': '⠶', ')': '⠶', '+': '⠖', '-': '⠒',
-        '×': '⠦', '÷': '⠲'
+        '.': '⠲',
+        '،': '⠂',
+        '؟': '⠦',
+        '!': '⠖',
+        '(': '⠶',
+        ')': '⠶',
+        '+': '⠖',
+        '-': '⠒',
+        '×': '⠦',
+        '÷': '⠲'
     };
 
     const NUMS = {
-        '1': '⠼⠁', '2': '⠼⠃', '3': '⠼⠉', '4': '⠼⠙',
-        '5': '⠼⠑', '6': '⠼⠋', '7': '⠼⠛', '8': '⠼⠓',
-        '9': '⠼⠊', '0': '⠼⠚'
+        '1': '⠼⠁',
+        '2': '⠼⠃',
+        '3': '⠼⠉',
+        '4': '⠼⠙',
+        '5': '⠼⠑',
+        '6': '⠼⠋',
+        '7': '⠼⠛',
+        '8': '⠼⠓',
+        '9': '⠼⠊',
+        '0': '⠼⠚'
     };
 
     const NAMES_MAP = {
-        'َ': 'فتحة', 'ُ': 'ضمة', 'ِ': 'كسرة', 'ْ': 'سكون',
-        'ً': 'تنوين فتح', 'ٌ': 'تنوين ضم', 'ٍ': 'تنوين كسر',
+        'َ': 'فتحة',
+        'ُ': 'ضمة',
+        'ِ': 'كسرة',
+        'ْ': 'سكون',
+        'ً': 'تنوين فتح',
+        'ٌ': 'تنوين ضم',
+        'ٍ': 'تنوين كسر',
         'ّ': 'شدة'
     };
 
@@ -651,25 +835,37 @@
     let lastTapTime = 0;
     let lastTarget = null;
 
+    /* ===================================
+       النطق
+    =================================== */
+
     function speak(t) {
+
         window.speechSynthesis.cancel();
 
         const msg = new SpeechSynthesisUtterance(t);
+
         msg.lang = 'ar-SA';
 
         window.speechSynthesis.speak(msg);
     }
+
+    /* ===================================
+       التحكم الموحد
+    =================================== */
 
     function unifiedControl(element, action, description) {
 
         speak(description || element.innerText);
 
         if (!isBlindMode) {
+
             action();
 
         } else {
 
             const currentTime = new Date().getTime();
+
             const tapLength = currentTime - lastTapTime;
 
             if (
@@ -677,16 +873,23 @@
                 tapLength < 500 &&
                 tapLength > 0
             ) {
+
                 action();
+
                 lastTarget = null;
 
             } else {
+
                 lastTarget = element;
             }
 
             lastTapTime = currentTime;
         }
     }
+
+    /* ===================================
+       إدخال الحروف
+    =================================== */
 
     function handleInput(char, type = 'letter') {
 
@@ -712,6 +915,10 @@
         updateUI();
     }
 
+    /* ===================================
+       المسافة
+    =================================== */
+
     function handleSpace() {
 
         document.getElementById('output').value += " ";
@@ -720,6 +927,10 @@
 
         updateUI();
     }
+
+    /* ===================================
+       الحذف
+    =================================== */
 
     function handleBackspace() {
 
@@ -741,6 +952,10 @@
         }
     }
 
+    /* ===================================
+       مسح الكل
+    =================================== */
+
     function handleClearAll() {
 
         document.getElementById('output').value = "";
@@ -749,6 +964,10 @@
 
         updateUI();
     }
+
+    /* ===================================
+       تحديث المعاينة
+    =================================== */
 
     function updateUI() {
 
@@ -760,7 +979,9 @@
         out.scrollTop = out.scrollHeight;
     }
 
-    // مزامنة النص المكتوب أو الملصوق مع معاينة برايل
+    /* ===================================
+       مزامنة الكتابة واللصق
+    =================================== */
 
     document.getElementById('output').addEventListener('input', function() {
 
@@ -781,6 +1002,10 @@
         updateUI();
     });
 
+    /* ===================================
+       فتح النوافذ
+    =================================== */
+
     function openPopup(id, name) {
 
         document.getElementById('overlay').style.display = 'block';
@@ -788,16 +1013,26 @@
         document.getElementById(id).classList.add('active');
     }
 
+    /* ===================================
+       إغلاق النوافذ
+    =================================== */
+
     function closeAllPopups() {
 
         document.querySelectorAll('.popup-menu').forEach(p => {
+
             p.classList.remove('active');
+
         });
 
         document.getElementById('language-popup').classList.remove('active');
 
         document.getElementById('overlay').style.display = 'none';
     }
+
+    /* ===================================
+       تغيير وضع التشغيل
+    =================================== */
 
     function toggleAppMode() {
 
@@ -818,7 +1053,9 @@
         renderAll();
     }
 
-    // نسخ النص المكتوب كما هو، سواء كان عربيًا أو برايل
+    /* ===================================
+       نسخ النص
+    =================================== */
 
     async function handleCopy() {
 
@@ -847,6 +1084,10 @@
             document.body.removeChild(textArea);
         }
     }
+
+    /* ===================================
+       إنشاء لوحات المفاتيح
+    =================================== */
 
     function renderAll() {
 
@@ -965,9 +1206,9 @@
         fill('pop-hamzas', HAMZAS, 'hamza', 'همزة');
     }
 
-    // ==========================================
-    // عدّ نقاط برايل بالصوت فقط
-    // ==========================================
+    /* ==========================================
+       عدّ نقاط برايل
+    ========================================== */
 
     function getBrailleForChar(char) {
 
@@ -985,11 +1226,17 @@
         const value = cell.codePointAt(0) - 0x2800;
 
         const positions = [
+
             'أقصى اليسار في الأعلى',
+
             'أقصى اليسار في المنتصف',
+
             'أقصى اليسار في الأسفل',
+
             'أقصى اليمين في الأعلى',
+
             'أقصى اليمين في المنتصف',
+
             'أقصى اليمين في الأسفل'
         ];
 
@@ -1000,8 +1247,11 @@
             if (value & (1 << i)) {
 
                 dots.push({
+
                     number: i + 1,
+
                     position: positions[i]
+
                 });
             }
         }
@@ -1030,7 +1280,9 @@
         }
 
         return {
+
             speech: speech,
+
             dotsCount: dots.length
         };
     }
@@ -1049,6 +1301,7 @@
                 new SpeechSynthesisUtterance(parts[index]);
 
             utterance.lang = 'ar-SA';
+
             utterance.rate = 0.9;
 
             utterance.onend = function() {
@@ -1083,7 +1336,9 @@
         }
 
         let totalCells = 0;
+
         let totalDots = 0;
+
         let speechParts = [];
 
         const characters = Array.from(text);
@@ -1097,7 +1352,9 @@
             if (!brailleCode) return;
 
             const cells = Array.from(brailleCode).filter(cell =>
+
                 /^[\u2800-\u28FF]$/.test(cell)
+
             );
 
             if (cells.length === 0) return;
@@ -1105,7 +1362,9 @@
             const characterName = NAMES_MAP[char] || char;
 
             speechParts.push(
+
                 `الحرف ${characterName}. رمز برايل المقابل له هو ${brailleCode}.`
+
             );
 
             let characterDots = 0;
@@ -1125,7 +1384,9 @@
             });
 
             speechParts.push(
+
                 `إجمالي النقاط البارزة في الحرف ${characterName} هو ${characterDots} نقطة.`
+
             );
         });
 
@@ -1137,19 +1398,23 @@
         }
 
         speechParts.push(
+
             `انتهى عد الحروف. إجمالي خلايا برايل في النص هو ${totalCells} خلية.`
+
         );
 
         speechParts.push(
+
             `إجمالي النقاط البارزة في النص كله هو ${totalDots} نقطة.`
+
         );
 
         speakBrailleSequence(speechParts);
     }
 
-    // ==========================================
-    // اكتشف اللغة - البحث في المعجم الوسيط
-    // ==========================================
+    /* ==========================================
+       اكتشف اللغة - المعجم الوسيط
+    ========================================== */
 
     function openLanguagePopup() {
 
@@ -1218,7 +1483,9 @@
         speak('جاري البحث عن ' + word + ' في المعجم الوسيط');
 
         const query = encodeURIComponent(
+
             'site:arabicacademy.gov.eg/ar/محرك-البحث/معجم/dic-19/ ' + word
+
         );
 
         const searchURL =
@@ -1229,9 +1496,9 @@
         closeLanguagePopup();
     }
 
-    // ==========================================
-    // تصدير Word
-    // ==========================================
+    /* ==========================================
+       تصدير ملف Word
+    ========================================== */
 
     function handleExport() {
 
@@ -1250,9 +1517,13 @@
                     page: {
 
                         margin: {
+
                             top: 1000,
+
                             right: 1000,
+
                             bottom: 1000,
+
                             left: 1000
                         }
                     }
@@ -1267,8 +1538,11 @@
                             new TextRun({
 
                                 text: "Braille & Arabic 2026",
+
                                 bold: true,
+
                                 size: 32,
+
                                 rightToLeft: false
                             })
                         ],
@@ -1285,18 +1559,22 @@
                             new TextRun({
 
                                 text: "النص العربي: ",
+
                                 bold: true,
+
                                 rightToLeft: true
                             }),
 
                             new TextRun({
 
                                 text: text,
+
                                 rightToLeft: true
                             })
                         ],
 
                         alignment: "right",
+
                         bidirectional: true
                     }),
 
@@ -1307,18 +1585,22 @@
                             new TextRun({
 
                                 text: "نص برايل: ",
+
                                 bold: true,
+
                                 rightToLeft: true
                             }),
 
                             new TextRun({
 
                                 text: brailleBuffer.join(''),
+
                                 rightToLeft: false
                             })
                         ],
 
                         alignment: "right",
+
                         bidirectional: true
                     })
                 ]
@@ -1328,8 +1610,13 @@
         Packer.toBlob(doc).then(blob => {
 
             saveAs(blob, "Braille_Arabic_2026.docx");
+
         });
     }
+
+    /* ===================================
+       نطق النص بالكامل
+    =================================== */
 
     function speakAll() {
 
@@ -1338,7 +1625,9 @@
         speak(t || "لا يوجد نص مكتوب حالياً");
     }
 
-    // تشغيل لوحة المفاتيح الأصلية
+    /* ===================================
+       تشغيل التطبيق
+    =================================== */
 
     renderAll();
 
