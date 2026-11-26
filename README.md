@@ -18,94 +18,224 @@
             --glass: rgba(255, 255, 255, 0.05);
         }
 
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             background-color: var(--bg);
             color: #fff;
             font-family: 'Segoe UI', Tahoma, sans-serif;
-            margin: 0;
-            overflow: hidden;
-            touch-action: none;
-            user-select: none;
-            background-image: radial-gradient(circle at 50% 50%, #111 0%, #000 100%);
-        }
 
-        #display-section {
-            height: 22vh;
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border-bottom: 2px solid var(--cyan);
-            padding: 10px;
             display: flex;
             flex-direction: column;
+
+            height: 100vh;
+            height: 100dvh;
+
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+
+            background-image:
+                radial-gradient(circle at 50% 50%, #111 0%, #000 100%);
+        }
+
+        /* =====================================
+           شريط العنوان العلوي
+        ===================================== */
+
+        #app-header {
+            flex: 0 0 58px;
+            min-height: 58px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            position: relative;
+
+            padding: 5px 12px;
+
+            background: #080808;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.35);
+
+            box-shadow: 0 2px 12px rgba(0, 243, 255, 0.08);
+        }
+
+        #app-title {
+            color: var(--cyan);
+            font-size: 17px;
+            font-weight: bold;
+            text-align: center;
+
+            text-shadow: 0 0 8px rgba(0, 243, 255, 0.5);
+
+            padding: 0 105px;
+            white-space: nowrap;
+        }
+
+        #mode-toggle {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+
+            z-index: 10002;
+
+            background: var(--purple);
+            border: none;
+            color: #fff;
+
+            padding: 9px 12px;
+            border-radius: 12px;
+
+            font-size: 12px;
+            font-weight: bold;
+
+            box-shadow: 0 0 10px rgba(188, 19, 254, 0.5);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        /* =====================================
+           مساحة الكتابة ومعاينة برايل
+        ===================================== */
+
+        #display-section {
+            flex: 0 0 20%;
+            min-height: 120px;
+
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+
+            border-bottom: 2px solid var(--cyan);
+
+            padding: 8px 12px;
+
+            display: flex;
+            flex-direction: column;
+
+            overflow: hidden;
         }
 
         #output {
             flex: 1;
+            width: 100%;
+            min-height: 0;
+
             background: transparent;
             border: none;
+
             color: var(--cyan);
-            font-size: 22px;
+            font-size: 21px;
+
             resize: none;
             outline: none;
+
             text-align: right;
             text-shadow: 0 0 8px var(--cyan);
+
             font-weight: bold;
+
             user-select: text;
             -webkit-user-select: text;
             touch-action: auto;
         }
 
         #braille-preview {
-            height: 30px;
+            flex: 0 0 35px;
+            height: 35px;
+
             color: var(--purple);
-            font-size: 18px;
+            font-size: 19px;
+
             border-top: 1px solid #333;
+
             padding-top: 5px;
+
             overflow-x: auto;
+            overflow-y: hidden;
+
             white-space: nowrap;
         }
 
+        /* =====================================
+           منطقة لوحة المفاتيح
+        ===================================== */
+
         #keyboard-container {
-            height: 60vh;
+            flex: 1;
+            min-height: 0;
+
+            width: 100%;
+
             overflow-y: auto;
+            overflow-x: hidden;
+
             background: transparent;
+
+            padding-bottom: 8px;
+
+            -webkit-overflow-scrolling: touch;
         }
 
         #keyboard-sighted {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+
             gap: 5px;
             padding: 10px;
         }
 
         #keyboard-blind {
             display: none;
+
             grid-template-columns: 1fr 1fr;
+
             gap: 30px;
             padding: 20px;
         }
 
         .cluster-main {
             background: radial-gradient(circle, #222 0%, #000 100%);
+
             border: 2px solid var(--purple);
             border-radius: 50%;
+
             position: relative;
-            aspect-ratio: 1/1;
+            aspect-ratio: 1 / 1;
+
+            width: 100%;
         }
 
         .sub-key {
             position: absolute;
+
             width: 60px;
             height: 60px;
+
             background: #111;
             border: 2px solid var(--cyan);
+
             border-radius: 50%;
+
             display: flex;
             align-items: center;
             justify-content: center;
+
             font-size: 18px;
             color: #fff;
+
             box-shadow: 0 0 10px var(--cyan);
+
             touch-action: manipulation;
         }
 
@@ -123,13 +253,19 @@
 
         .key-s {
             background: var(--key-bg);
+
             border: 1px solid rgba(0, 243, 255, 0.3);
             border-radius: 8px;
+
             display: flex;
             flex-direction: column;
+
             align-items: center;
             justify-content: center;
+
             min-height: 55px;
+
+            overflow: hidden;
         }
 
         .key-s b {
@@ -137,24 +273,81 @@
             color: var(--purple);
         }
 
+        /* =====================================
+           شريط الأدوات أسفل لوحة المفاتيح
+        ===================================== */
+
         #nav-bar {
-            height: 18vh;
-            display: grid;
-            grid-template-columns: repeat(5, 20%);
-            background: #000;
+            flex: 0 0 100px;
+            min-height: 100px;
+
+            width: 100%;
+
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 9px 10px;
+
+            background: #080808;
+
             border-top: 2px solid var(--purple);
+
+            overflow-x: auto;
+            overflow-y: hidden;
+
+            direction: rtl;
+
+            -webkit-overflow-scrolling: touch;
+
+            scrollbar-width: none;
+        }
+
+        #nav-bar::-webkit-scrollbar {
+            display: none;
         }
 
         .nav-btn {
+            flex: 0 0 76px;
+
+            height: 76px;
+            min-width: 76px;
+
             display: flex;
             flex-direction: column;
+
             align-items: center;
             justify-content: center;
+
+            gap: 3px;
+
             font-size: 11px;
+            line-height: 1.3;
+
             color: #fff;
+
             cursor: pointer;
-            border: 0.1px solid #222;
+
+            background: rgba(25, 25, 25, 0.95);
+
+            border: 1px solid rgba(0, 243, 255, 0.25);
+            border-radius: 12px;
+
             text-align: center;
+
+            padding: 5px;
+
+            box-shadow: 0 0 7px rgba(0, 243, 255, 0.06);
+
+            flex-shrink: 0;
+        }
+
+        .nav-btn:active {
+            background: rgba(0, 243, 255, 0.2);
+            border-color: var(--cyan);
+            transform: scale(0.96);
         }
 
         .nav-btn b {
@@ -162,20 +355,37 @@
             font-size: 14px;
         }
 
+        /* =====================================
+           النوافذ المنبثقة
+        ===================================== */
+
         .popup-menu {
             position: fixed;
+
             top: 50%;
             left: 50%;
+
             transform: translate(-50%, -50%) scale(0);
+
             width: 90%;
-            background: rgba(0,0,0,0.95);
+            max-height: 75vh;
+
+            overflow-y: auto;
+
+            background: rgba(0, 0, 0, 0.95);
+
             border: 2px solid var(--cyan);
             border-radius: 15px;
+
             padding: 15px;
+
             display: grid;
             grid-template-columns: repeat(3, 1fr);
+
             gap: 10px;
+
             z-index: 10001;
+
             transition: 0.2s;
         }
 
@@ -183,47 +393,53 @@
             transform: translate(-50%, -50%) scale(1);
         }
 
-        #mode-toggle {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            z-index: 10002;
-            background: var(--purple);
-            border: none;
-            color: #fff;
-            padding: 8px 15px;
-            border-radius: 15px;
-            font-weight: bold;
-            box-shadow: 0 0 10px var(--purple);
-        }
+        /* =====================================
+           طبقة التعتيم
+        ===================================== */
 
         #overlay {
             position: fixed;
+
             top: 0;
             left: 0;
+
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
+
+            background: rgba(0, 0, 0, 0.7);
+
             z-index: 9999;
+
             display: none;
         }
 
-        /* نافذة اكتشف اللغة */
+        /* =====================================
+           نافذة اكتشف اللغة
+        ===================================== */
 
         #language-popup {
             position: fixed;
+
             top: 50%;
             left: 50%;
+
             transform: translate(-50%, -50%) scale(0);
+
             width: 88%;
             max-width: 420px;
+
             padding: 20px;
             box-sizing: border-box;
+
             background: #080808;
+
             border: 2px solid var(--cyan);
             border-radius: 18px;
+
             z-index: 10003;
-            transition: .2s;
+
+            transition: 0.2s;
+
             box-shadow: 0 0 20px var(--purple);
         }
 
@@ -239,15 +455,21 @@
         #language-word {
             width: 100%;
             box-sizing: border-box;
+
             padding: 13px;
             margin: 12px 0;
+
             background: #151515;
             color: white;
+
             border: 1px solid var(--cyan);
             border-radius: 8px;
+
             font-size: 18px;
             text-align: right;
+
             outline: none;
+
             user-select: text;
             -webkit-user-select: text;
             touch-action: auto;
@@ -255,12 +477,16 @@
 
         .language-action {
             width: 100%;
+
             padding: 12px;
             margin-top: 8px;
+
             border: 0;
             border-radius: 8px;
+
             background: var(--purple);
             color: white;
+
             font-size: 16px;
             font-weight: bold;
         }
@@ -271,144 +497,254 @@
             line-height: 1.8;
             text-align: center;
         }
+
+        /* =====================================
+           تحسينات الهواتف الصغيرة
+        ===================================== */
+
+        @media (max-width: 380px) {
+
+            #app-title {
+                font-size: 14px;
+                padding: 0 95px 0 5px;
+            }
+
+            #mode-toggle {
+                font-size: 10px;
+                padding: 8px 9px;
+            }
+
+            #display-section {
+                flex-basis: 19%;
+            }
+
+            #output {
+                font-size: 18px;
+            }
+
+            #keyboard-sighted {
+                grid-template-columns: repeat(5, minmax(0, 1fr));
+                gap: 4px;
+                padding: 7px;
+            }
+
+            .key-s {
+                min-height: 49px;
+                font-size: 13px;
+            }
+
+            .key-s b {
+                font-size: 16px;
+            }
+
+            #nav-bar {
+                flex-basis: 92px;
+                min-height: 92px;
+                gap: 7px;
+                padding: 7px;
+            }
+
+            .nav-btn {
+                flex-basis: 70px;
+                min-width: 70px;
+                height: 72px;
+                font-size: 10px;
+            }
+        }
+
     </style>
 </head>
 
 <body onclick="closeAllPopups()">
 
-<div id="overlay"></div>
+    <div id="overlay"></div>
 
-<button id="mode-toggle"
-        onclick="event.stopPropagation(); toggleAppMode()">
-    🔄 وضع التشغيل
-</button>
+    <!-- شريط العنوان -->
 
-<div id="display-section" onclick="event.stopPropagation()">
-    <textarea id="output"
-              placeholder="سوف يظهر النص هنا..."
-              aria-label="مساحة النص المكتوب"></textarea>
+    <header id="app-header" onclick="event.stopPropagation()">
 
-    <div id="braille-preview"
-         dir="ltr"
-         aria-label="معاينة برايل"></div>
-</div>
+        <div id="app-title">
+            نظام برايل الهجين المطور
+        </div>
 
-<div id="keyboard-container">
-    <div id="keyboard-sighted" onclick="event.stopPropagation()"></div>
-    <div id="keyboard-blind" onclick="event.stopPropagation()"></div>
-</div>
+        <button id="mode-toggle"
+                onclick="event.stopPropagation(); toggleAppMode()">
+            🔄 وضع التشغيل
+        </button>
 
-<div id="nav-bar" onclick="event.stopPropagation()">
+    </header>
 
-    <div class="nav-btn"
-         onclick="unifiedControl(this, () => openPopup('pop-nums', 'الأرقام'), 'أرقام')">
-        🔢<br>أرقام<br><b>⠼</b>
+    <!-- مساحة الكتابة ومعاينة برايل -->
+
+    <div id="display-section" onclick="event.stopPropagation()">
+
+        <textarea id="output"
+                  placeholder="سوف يظهر النص هنا..."
+                  aria-label="مساحة النص المكتوب"></textarea>
+
+        <div id="braille-preview"
+             dir="ltr"
+             aria-label="معاينة برايل"></div>
+
     </div>
 
-    <div class="nav-btn"
-         onclick="unifiedControl(this, () => openPopup('pop-tashkeel', 'التشكيل'), 'تشكيل')">
-        ✨<br>تشكيل<br><b>⠠</b>
+    <!-- لوحة المفاتيح -->
+
+    <div id="keyboard-container">
+
+        <div id="keyboard-sighted"
+             onclick="event.stopPropagation()"></div>
+
+        <div id="keyboard-blind"
+             onclick="event.stopPropagation()"></div>
+
     </div>
 
-    <div class="nav-btn"
-         onclick="unifiedControl(this, () => openPopup('pop-punct', 'علامات الترقيم'), 'ترقيم')">
-        ❓<br>ترقيم<br><b>⠦</b>
+    <!-- شريط الأدوات أسفل لوحة المفاتيح مباشرة -->
+
+    <div id="nav-bar" onclick="event.stopPropagation()">
+
+        <div class="nav-btn"
+             onclick="unifiedControl(this, () => openPopup('pop-nums', 'الأرقام'), 'أرقام')">
+            🔢<br>
+            أرقام
+            <b>⠼</b>
+        </div>
+
+        <div class="nav-btn"
+             onclick="unifiedControl(this, () => openPopup('pop-tashkeel', 'التشكيل'), 'تشكيل')">
+            ✨<br>
+            تشكيل
+            <b>⠠</b>
+        </div>
+
+        <div class="nav-btn"
+             onclick="unifiedControl(this, () => openPopup('pop-punct', 'علامات الترقيم'), 'ترقيم')">
+            ❓<br>
+            ترقيم
+            <b>⠦</b>
+        </div>
+
+        <div class="nav-btn"
+             onclick="unifiedControl(this, () => openPopup('pop-hamzas', 'الهمزات'), 'همزات')">
+            ء<br>
+            همزات
+            <b>⠄</b>
+        </div>
+
+        <div class="nav-btn"
+             onclick="unifiedControl(this, handleBackspace, 'حذف')"
+             style="color:var(--red)">
+            🔙<br>
+            حذف
+            <b>⠡</b>
+        </div>
+
+        <div class="nav-btn"
+             onclick="unifiedControl(this, speakAll, 'نطق النص')">
+            🔊<br>
+            نطق النص
+        </div>
+
+        <div class="nav-btn"
+             onclick="unifiedControl(this, handleCopy, 'نسخ')">
+            📋<br>
+            نسخ
+        </div>
+
+        <div class="nav-btn"
+             onclick="unifiedControl(this, handleClearAll, 'مسح الكل')">
+            🗑️<br>
+            مسح الكل
+        </div>
+
+        <div class="nav-btn"
+             onclick="unifiedControl(this, handleExport, 'حفظ كملف وورد')">
+            💾<br>
+            Word
+        </div>
+
+        <div class="nav-btn"
+             onclick="unifiedControl(this, handleSpace, 'مسافة')"
+             style="background:var(--cyan); color:#000;">
+            ␣<br>
+            مسافة
+        </div>
+
+        <!-- زر عد نقاط برايل -->
+
+        <div class="nav-btn"
+             onclick="unifiedControl(this, speakBrailleCount, 'عدّ نقاط برايل')">
+            ⠿<br>
+            عدّ نقاط برايل
+        </div>
+
+        <!-- زر اكتشف اللغة -->
+
+        <div class="nav-btn"
+             onclick="unifiedControl(this, openLanguagePopup, 'اكتشف اللغة')">
+            📖<br>
+            اكتشف اللغة
+            <b>المعجم الوسيط</b>
+        </div>
+
     </div>
 
-    <div class="nav-btn"
-         onclick="unifiedControl(this, () => openPopup('pop-hamzas', 'الهمزات'), 'همزات')">
-        ء<br>همزات<br><b>⠄</b>
+    <!-- النوافذ المنبثقة الأصلية -->
+
+    <div id="pop-nums"
+         class="popup-menu"
+         onclick="event.stopPropagation()"></div>
+
+    <div id="pop-tashkeel"
+         class="popup-menu"
+         onclick="event.stopPropagation()"></div>
+
+    <div id="pop-punct"
+         class="popup-menu"
+         onclick="event.stopPropagation()"></div>
+
+    <div id="pop-hamzas"
+         class="popup-menu"
+         onclick="event.stopPropagation()"></div>
+
+    <!-- نافذة اكتشف اللغة -->
+
+    <div id="language-popup" onclick="event.stopPropagation()">
+
+        <h3>📖 اكتشف اللغة</h3>
+
+        <p style="text-align:center;color:white">
+            اكتشف معنى الكلمة وجذرها من المعجم الوسيط.
+        </p>
+
+        <input
+            id="language-word"
+            type="text"
+            placeholder="اكتبي كلمة عربية..."
+            aria-label="الكلمة المراد البحث عنها"
+        >
+
+        <button class="language-action"
+                onclick="searchLanguage()">
+            🔍 ابحث في المعجم الوسيط
+        </button>
+
+        <button class="language-action"
+                style="background:#333"
+                onclick="closeLanguagePopup()">
+            إغلاق
+        </button>
+
+        <p id="language-note">
+            سيتم فتح نتائج البحث الموجهة إلى المعجم الوسيط الرسمي.
+        </p>
+
     </div>
 
-    <div class="nav-btn"
-         onclick="unifiedControl(this, handleBackspace, 'حذف')"
-         style="color:var(--red)">
-        🔙<br>حذف<br><b>⠡</b>
-    </div>
-
-    <div class="nav-btn"
-         onclick="unifiedControl(this, speakAll, 'نطق النص')">
-        🔊<br>نطق النص
-    </div>
-
-    <div class="nav-btn"
-         onclick="unifiedControl(this, handleCopy, 'نسخ')">
-        📋<br>نسخ
-    </div>
-
-    <div class="nav-btn"
-         onclick="unifiedControl(this, handleClearAll, 'مسح الكل')">
-        🗑️<br>مسح الكل
-    </div>
-
-    <div class="nav-btn"
-         onclick="unifiedControl(this, handleExport, 'حفظ كملف وورد')">
-        💾<br>Word
-    </div>
-
-    <div class="nav-btn"
-         onclick="unifiedControl(this, handleSpace, 'مسافة')"
-         style="background:var(--cyan); color:#000;">
-        ␣<br>مسافة
-    </div>
-
-    <!-- زر عد نقاط برايل الأصلي -->
-
-    <div class="nav-btn"
-         onclick="unifiedControl(this, speakBrailleCount, 'عدّ نقاط برايل')">
-        ⠿<br>عدّ نقاط برايل
-    </div>
-
-    <!-- زر اكتشف اللغة الجديد -->
-
-    <div class="nav-btn"
-         onclick="unifiedControl(this, openLanguagePopup, 'اكتشف اللغة')">
-        📖<br>اكتشف اللغة
-        <b>المعجم الوسيط</b>
-    </div>
-
-</div>
-
-<div id="pop-nums" class="popup-menu" onclick="event.stopPropagation()"></div>
-<div id="pop-tashkeel" class="popup-menu" onclick="event.stopPropagation()"></div>
-<div id="pop-punct" class="popup-menu" onclick="event.stopPropagation()"></div>
-<div id="pop-hamzas" class="popup-menu" onclick="event.stopPropagation()"></div>
-
-<!-- نافذة اكتشف اللغة -->
-
-<div id="language-popup" onclick="event.stopPropagation()">
-
-    <h3>📖 اكتشف اللغة</h3>
-
-    <p style="text-align:center;color:white">
-        اكتشف معنى الكلمة وجذرها من المعجم الوسيط.
-    </p>
-
-    <input
-        id="language-word"
-        type="text"
-        placeholder="اكتبي كلمة عربية..."
-        aria-label="الكلمة المراد البحث عنها"
-    >
-
-    <button class="language-action"
-            onclick="searchLanguage()">
-        🔍 ابحث في المعجم الوسيط
-    </button>
-
-    <button class="language-action"
-            style="background:#333"
-            onclick="closeLanguagePopup()">
-        إغلاق
-    </button>
-
-    <p id="language-note">
-        سيتم فتح نتائج البحث الموجهة إلى المعجم الوسيط الرسمي.
-    </p>
-
-</div>
 
 <script>
+
     const CHARS = {
         'ا': '⠁', 'ب': '⠃', 'ت': '⠞', 'ث': '⠹',
         'ج': '⠚', 'ح': '⠱', 'خ': '⠭', 'د': '⠙',
@@ -454,7 +790,9 @@
     let lastTapTime = 0;
     let lastTarget = null;
 
+
     function speak(t) {
+
         window.speechSynthesis.cancel();
 
         const msg = new SpeechSynthesisUtterance(t);
@@ -463,12 +801,17 @@
         window.speechSynthesis.speak(msg);
     }
 
+
     function unifiedControl(element, action, description) {
+
         speak(description || element.innerText);
 
         if (!isBlindMode) {
+
             action();
+
         } else {
+
             const currentTime = new Date().getTime();
             const tapLength = currentTime - lastTapTime;
 
@@ -477,17 +820,23 @@
                 tapLength < 500 &&
                 tapLength > 0
             ) {
+
                 action();
                 lastTarget = null;
+
             } else {
+
                 lastTarget = element;
+
             }
 
             lastTapTime = currentTime;
         }
     }
 
+
     function handleInput(char, type = 'letter') {
+
         const out = document.getElementById('output');
 
         out.value += char;
@@ -510,7 +859,9 @@
         updateUI();
     }
 
+
     function handleSpace() {
+
         document.getElementById('output').value += " ";
 
         brailleBuffer.push(" ");
@@ -518,10 +869,13 @@
         updateUI();
     }
 
+
     function handleBackspace() {
+
         const out = document.getElementById('output');
 
         if (out.value.length > 0) {
+
             const lastChar = out.value.slice(-1);
 
             if (!isBlindMode) {
@@ -536,7 +890,9 @@
         }
     }
 
+
     function handleClearAll() {
+
         document.getElementById('output').value = "";
 
         brailleBuffer = [];
@@ -544,7 +900,9 @@
         updateUI();
     }
 
+
     function updateUI() {
+
         document.getElementById('braille-preview').innerText =
             brailleBuffer.join('');
 
@@ -553,12 +911,15 @@
         out.scrollTop = out.scrollHeight;
     }
 
+
     // مزامنة النص المكتوب أو الملصوق مع معاينة برايل
 
     document.getElementById('output').addEventListener('input', function() {
+
         const text = this.value;
 
         brailleBuffer = Array.from(text).map(char => {
+
             return CHARS[char] ||
                    (char === 'ه' ? CHARS['هـ'] : '') ||
                    HAMZAS[char] ||
@@ -566,20 +927,27 @@
                    PUNCT[char] ||
                    NUMS[char] ||
                    (/[\u2800-\u28FF]/.test(char) ? char : char);
+
         });
 
         updateUI();
     });
 
+
     function openPopup(id, name) {
+
         document.getElementById('overlay').style.display = 'block';
 
         document.getElementById(id).classList.add('active');
     }
 
+
     function closeAllPopups() {
+
         document.querySelectorAll('.popup-menu').forEach(p => {
+
             p.classList.remove('active');
+
         });
 
         document.getElementById('language-popup').classList.remove('active');
@@ -587,7 +955,9 @@
         document.getElementById('overlay').style.display = 'none';
     }
 
+
     function toggleAppMode() {
+
         isBlindMode = !isBlindMode;
 
         document.getElementById('keyboard-sighted').style.display =
@@ -605,15 +975,19 @@
         renderAll();
     }
 
+
     // نسخ النص المكتوب كما هو، سواء كان عربيًا أو برايل
 
     async function handleCopy() {
+
         const text = document.getElementById('output').value;
 
         try {
+
             await navigator.clipboard.writeText(text);
 
         } catch (err) {
+
             const textArea = document.createElement("textarea");
 
             textArea.value = text;
@@ -632,12 +1006,15 @@
         }
     }
 
+
     function renderAll() {
+
         const sighted = document.getElementById('keyboard-sighted');
 
         sighted.innerHTML = "";
 
         Object.keys(CHARS).forEach(c => {
+
             const btn = document.createElement('div');
 
             btn.className = "key-s";
@@ -645,6 +1022,7 @@
             btn.innerHTML = `<span>${c}</span><b>${CHARS[c]}</b>`;
 
             btn.onclick = (e) => {
+
                 e.stopPropagation();
 
                 handleInput(c);
@@ -653,6 +1031,7 @@
             sighted.appendChild(btn);
         });
 
+
         const blind = document.getElementById('keyboard-blind');
 
         blind.innerHTML = "";
@@ -660,6 +1039,7 @@
         const charKeys = Object.keys(CHARS);
 
         for (let i = 0; i < charKeys.length; i += 6) {
+
             const cluster = document.createElement('div');
 
             cluster.className = "cluster-main";
@@ -670,12 +1050,14 @@
                 `أنت الآن في عنقود دائري من حرف ${chunk[0]} إلى حرف ${chunk[chunk.length-1]}`;
 
             cluster.onclick = (e) => {
+
                 e.stopPropagation();
 
                 speak(clusterRange);
             };
 
             chunk.forEach((c, index) => {
+
                 const sub = document.createElement('div');
 
                 sub.className = `sub-key pos-${index}`;
@@ -683,6 +1065,7 @@
                 sub.innerText = c;
 
                 sub.onclick = (e) => {
+
                     e.stopPropagation();
 
                     const fullDesc =
@@ -701,12 +1084,15 @@
             blind.appendChild(cluster);
         }
 
+
         const fill = (id, map, type, title) => {
+
             const el = document.getElementById(id);
 
             el.innerHTML = "";
 
             Object.keys(map).forEach(k => {
+
                 const btn = document.createElement('div');
 
                 btn.className = "key-s";
@@ -714,6 +1100,7 @@
                 btn.innerHTML = `<span>${k}</span><b>${map[k]}</b>`;
 
                 btn.onclick = (e) => {
+
                     e.stopPropagation();
 
                     let desc =
@@ -730,6 +1117,7 @@
             });
         };
 
+
         fill('pop-nums', NUMS, 'number', 'رقم');
 
         fill('pop-tashkeel', TASHKEEL, 'tashkeel', 'تشكيل');
@@ -739,11 +1127,14 @@
         fill('pop-hamzas', HAMZAS, 'hamza', 'همزة');
     }
 
+
     // ==========================================
     // عدّ نقاط برايل بالصوت فقط
     // ==========================================
 
+
     function getBrailleForChar(char) {
+
         return CHARS[char] ||
                (char === 'ه' ? CHARS['هـ'] : '') ||
                HAMZAS[char] ||
@@ -753,25 +1144,33 @@
                (/^[\u2800-\u28FF]$/.test(char) ? char : '');
     }
 
+
     function getBrailleDots(cell) {
+
         const value = cell.codePointAt(0) - 0x2800;
 
         const positions = [
+
             'أقصى اليسار في الأعلى',
             'أقصى اليسار في المنتصف',
             'أقصى اليسار في الأسفل',
             'أقصى اليمين في الأعلى',
             'أقصى اليمين في المنتصف',
             'أقصى اليمين في الأسفل'
+
         ];
 
         const dots = [];
 
         for (let i = 0; i < 6; i++) {
+
             if (value & (1 << i)) {
+
                 dots.push({
+
                     number: i + 1,
                     position: positions[i]
+
                 });
             }
         }
@@ -779,33 +1178,45 @@
         return dots;
     }
 
+
     function describeBrailleCell(cell, cellNumber) {
+
         const dots = getBrailleDots(cell);
 
         let speech =
             `الخلية رقم ${cellNumber}. عدد النقاط البارزة فيها ${dots.length} نقطة. `;
 
         if (dots.length === 0) {
+
             speech += 'لا توجد نقاط بارزة في هذه الخلية. ';
+
         } else {
+
             dots.forEach(dot => {
+
                 speech +=
                     `النقطة رقم ${dot.number} في ${dot.position}. `;
+
             });
         }
 
         return {
+
             speech: speech,
             dotsCount: dots.length
+
         };
     }
 
+
     function speakBrailleSequence(parts) {
+
         window.speechSynthesis.cancel();
 
         let index = 0;
 
         function speakNext() {
+
             if (index >= parts.length) return;
 
             const utterance =
@@ -815,13 +1226,17 @@
             utterance.rate = 0.9;
 
             utterance.onend = function() {
+
                 index++;
                 speakNext();
+
             };
 
             utterance.onerror = function() {
+
                 index++;
                 speakNext();
+
             };
 
             window.speechSynthesis.speak(utterance);
@@ -830,21 +1245,27 @@
         speakNext();
     }
 
+
     function speakBrailleCount() {
+
         const text = document.getElementById('output').value;
 
         if (!text.trim()) {
+
             speak('لا يوجد نص لحساب نقاط برايل.');
+
             return;
         }
 
         let totalCells = 0;
         let totalDots = 0;
+
         let speechParts = [];
 
         const characters = Array.from(text);
 
         characters.forEach(char => {
+
             if (char === ' ') return;
 
             const brailleCode = getBrailleForChar(char);
@@ -852,7 +1273,9 @@
             if (!brailleCode) return;
 
             const cells = Array.from(brailleCode).filter(cell =>
+
                 /^[\u2800-\u28FF]$/.test(cell)
+
             );
 
             if (cells.length === 0) return;
@@ -860,12 +1283,15 @@
             const characterName = NAMES_MAP[char] || char;
 
             speechParts.push(
+
                 `الحرف ${characterName}. رمز برايل المقابل له هو ${brailleCode}.`
+
             );
 
             let characterDots = 0;
 
             cells.forEach((cell, index) => {
+
                 totalCells++;
 
                 const result =
@@ -876,34 +1302,49 @@
                 totalDots += result.dotsCount;
 
                 speechParts.push(result.speech);
+
             });
 
             speechParts.push(
+
                 `إجمالي النقاط البارزة في الحرف ${characterName} هو ${characterDots} نقطة.`
+
             );
+
         });
 
+
         if (totalCells === 0) {
+
             speak('لم أجد خلايا برايل معروفة في النص.');
+
             return;
         }
 
+
         speechParts.push(
+
             `انتهى عد الحروف. إجمالي خلايا برايل في النص هو ${totalCells} خلية.`
+
         );
 
         speechParts.push(
+
             `إجمالي النقاط البارزة في النص كله هو ${totalDots} نقطة.`
+
         );
 
         speakBrailleSequence(speechParts);
     }
 
+
     // ==========================================
     // اكتشف اللغة - البحث في المعجم الوسيط
     // ==========================================
 
+
     function openLanguagePopup() {
+
         const popup =
             document.getElementById('language-popup');
 
@@ -920,15 +1361,21 @@
         // تعبئة الكلمة تلقائيًا إذا كان النص كلمة واحدة
 
         if (currentText && !/\s/.test(currentText)) {
+
             input.value = currentText;
+
         } else {
+
             input.value = '';
+
         }
 
         setTimeout(() => input.focus(), 250);
     }
 
+
     function closeLanguagePopup() {
+
         document.getElementById('language-popup')
             .classList.remove('active');
 
@@ -936,17 +1383,21 @@
             document.querySelectorAll('.popup-menu.active');
 
         if (otherPopups.length === 0) {
+
             document.getElementById('overlay').style.display = 'none';
         }
     }
 
+
     function searchLanguage() {
+
         const input =
             document.getElementById('language-word');
 
         const word = input.value.trim();
 
         if (!word) {
+
             speak('من فضلك اكتبي الكلمة التي تريدين البحث عنها');
 
             input.focus();
@@ -955,6 +1406,7 @@
         }
 
         if (/\s/.test(word)) {
+
             speak('من فضلك أدخلي كلمة واحدة فقط');
 
             return;
@@ -963,7 +1415,9 @@
         speak('جاري البحث عن ' + word + ' في المعجم الوسيط');
 
         const query = encodeURIComponent(
+
             'site:arabicacademy.gov.eg/ar/محرك-البحث/معجم/dic-19/ ' + word
+
         );
 
         const searchURL =
@@ -974,13 +1428,16 @@
         closeLanguagePopup();
     }
 
+
     // ==========================================
     // نهاية إضافة اكتشف اللغة
     // ==========================================
 
+
     // دالة تصدير Word الأصلية
 
     function handleExport() {
+
         const text = document.getElementById('output').value;
 
         if (!text) return;
@@ -988,84 +1445,121 @@
         const { Document, Packer, Paragraph, TextRun } = docx;
 
         const doc = new Document({
+
             sections: [{
+
                 properties: {
+
                     page: {
+
                         margin: {
+
                             top: 1000,
                             right: 1000,
                             bottom: 1000,
                             left: 1000
+
                         }
                     }
                 },
 
                 children: [
+
                     new Paragraph({
+
                         children: [
+
                             new TextRun({
+
                                 text: "نظام برايل الهجين المطور",
                                 bold: true,
                                 size: 32,
                                 rightToLeft: true
+
                             })
+
                         ],
 
                         alignment: "center",
                         bidirectional: true
+
                     }),
 
                     new Paragraph({ text: "" }),
 
                     new Paragraph({
+
                         children: [
+
                             new TextRun({
+
                                 text: "النص العربي: ",
                                 bold: true,
                                 rightToLeft: true
+
                             }),
 
                             new TextRun({
+
                                 text: text,
                                 rightToLeft: true
+
                             })
+
                         ],
 
                         alignment: "right",
                         bidirectional: true
+
                     }),
 
                     new Paragraph({
+
                         children: [
+
                             new TextRun({
+
                                 text: "نص برايل: ",
                                 bold: true,
                                 rightToLeft: true
+
                             }),
 
                             new TextRun({
+
                                 text: brailleBuffer.join(''),
                                 rightToLeft: false
+
                             })
+
                         ],
 
                         alignment: "right",
                         bidirectional: true
+
                     })
+
                 ]
+
             }]
+
         });
 
         Packer.toBlob(doc).then(blob => {
+
             saveAs(blob, "Braille_Export.docx");
+
         });
     }
 
+
     function speakAll() {
+
         const t = document.getElementById('output').value;
 
         speak(t || "لا يوجد نص مكتوب حالياً");
     }
+
 
     // تشغيل لوحة المفاتيح الأصلية
 
