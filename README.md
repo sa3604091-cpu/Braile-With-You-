@@ -126,22 +126,18 @@ body{
 </head>
 <body onclick="closeAllPopups()">
 <div id="overlay"></div>
-
 <header id="app-header" onclick="event.stopPropagation()">
     <div id="app-title" dir="ltr">Braille &amp; Arabic 2026</div>
     <button id="mode-toggle" onclick="event.stopPropagation(); toggleAppMode()">🔄 وضع التشغيل</button>
 </header>
-
 <div id="display-section" onclick="event.stopPropagation()">
     <textarea id="output" placeholder="سوف يظهر النص هنا..." aria-label="مساحة النص المكتوب"></textarea>
     <div id="braille-preview" dir="ltr" aria-label="معاينة برايل"></div>
 </div>
-
 <div id="keyboard-container">
     <div id="keyboard-sighted" onclick="event.stopPropagation()"></div>
     <div id="keyboard-blind" onclick="event.stopPropagation()"></div>
 </div>
-
 <div id="nav-bar" onclick="event.stopPropagation()">
     <div class="nav-btn" onclick="unifiedControl(this, () => openPopup('pop-nums', 'الأرقام'), 'أرقام')">🔢<br>أرقام<b>⠼</b></div>
     <div class="nav-btn" onclick="unifiedControl(this, () => openPopup('pop-tashkeel', 'التشكيل'), 'تشكيل')">✨<br>تشكيل<b>⠠</b></div>
@@ -156,12 +152,10 @@ body{
     <div class="nav-btn" onclick="unifiedControl(this, speakBrailleCount, 'عدّ نقاط برايل')">⠿<br>عدّ نقاط برايل</div>
     <div class="nav-btn" onclick="unifiedControl(this, openLanguagePopup, 'معجم اللغة العربية')">📖<br>اكتشف اللغة<b>معجم اللغة العربية</b></div>
 </div>
-
 <div id="pop-nums" class="popup-menu" onclick="event.stopPropagation()"></div>
 <div id="pop-tashkeel" class="popup-menu" onclick="event.stopPropagation()"></div>
 <div id="pop-punct" class="popup-menu" onclick="event.stopPropagation()"></div>
 <div id="pop-hamzas" class="popup-menu" onclick="event.stopPropagation()"></div>
-
 <div id="language-popup" onclick="event.stopPropagation()">
     <h3>📚 معجم اللغة العربية</h3>
     <p style="text-align:center;color:white;line-height:1.8">
@@ -174,7 +168,6 @@ body{
     </a>
     <button class="language-action" style="background:#333" onclick="closeLanguagePopup()">إغلاق</button>
 </div>
-
 <script>
 const CHARS = {
     'ا':'⠁','ب':'⠃','ت':'⠞','ث':'⠹','ج':'⠚','ح':'⠱','خ':'⠭','د':'⠙',
@@ -182,382 +175,205 @@ const CHARS = {
     'ظ':'⠿','ع':'⠷','غ':'⠣','ف':'⠋','ق':'⠟','ك':'⠅','ل':'⠇','م':'⠍',
     'ن':'⠝','هـ':'⠓','و':'⠺','ي':'⠊','ة':'⠡','ى':'⠕','پ':'⠏','چ':'⠡','ڤ':'⠧','گ':'⠛'
 };
-
 const HAMZAS={'أ':'⠁⠃','إ':'⠌','ؤ':'⠳','ئ':'⠽','ء':'⠄','آ':'⠜'};
 const TASHKEEL={'َ':'⠂','ُ':'⠕','ِ':'⠐','ْ':'⠒','ً':'⠘','ٌ':'⠰','ٍ':'⠡','ّ':'⠠⠠'};
 const PUNCT={'.':'⠲','،':'⠂','؟':'⠦','!':'⠖','(':'⠶',')':'⠶','+':'⠖','-':'⠒','×':'⠦','÷':'⠲'};
 const NUMS={'1':'⠼⠁','2':'⠼⠃','3':'⠼⠉','4':'⠼⠙','5':'⠼⠑','6':'⠼⠋','7':'⠼⠛','8':'⠼⠓','9':'⠼⠊','0':'⠼⠚'};
 const NAMES_MAP={'َ':'فتحة','ُ':'ضمة','ِ':'كسرة','ْ':'سكون','ً':'تنوين فتح','ٌ':'تنوين ضم','ٍ':'تنوين كسر','ّ':'شدة'};
-
 let isBlindMode=false, brailleBuffer=[], lastTapTime=0, lastTarget=null;
 
 function speak(t){
     window.speechSynthesis.cancel();
-    const msg=new SpeechSynthesisUtterance(t);
-    msg.lang='ar-SA';
-    window.speechSynthesis.speak(msg);
+    const msg=new SpeechSynthesisUtterance(t); msg.lang='ar-SA'; window.speechSynthesis.speak(msg);
 }
-
 function unifiedControl(element,action,description){
     speak(description||element.innerText);
     if(!isBlindMode){action();}
     else{
         const currentTime=new Date().getTime(),tapLength=currentTime-lastTapTime;
-        if(lastTarget===element&&tapLength<500&&tapLength>0){
-            action();
-            lastTarget=null;
-        }else{
-            lastTarget=element;
-        }
+        if(lastTarget===element&&tapLength<500&&tapLength>0){action();lastTarget=null;}
+        else{lastTarget=element;}
         lastTapTime=currentTime;
     }
 }
-
 function handleInput(char,type='letter'){
-    const out=document.getElementById('output');
-    out.value+=char;
+    const out=document.getElementById('output'); out.value+=char;
     const bCode=CHARS[char]||HAMZAS[char]||TASHKEEL[char]||PUNCT[char]||NUMS[char]||"";
     brailleBuffer.push(bCode);
-    speak(type==='tashkeel'?NAMES_MAP[char]:char);
-    updateUI();
+    speak(type==='tashkeel'?NAMES_MAP[char]:char); updateUI();
 }
-
-function handleSpace(){
-    document.getElementById('output').value+=" ";
-    brailleBuffer.push(" ");
-    updateUI();
-}
-
+function handleSpace(){document.getElementById('output').value+=" ";brailleBuffer.push(" ");updateUI();}
 function handleBackspace(){
     const out=document.getElementById('output');
     if(out.value.length>0){
-        const lastChar=out.value.slice(-1);
-        if(!isBlindMode)speak("حذف "+lastChar);
-        out.value=out.value.slice(0,-1);
-        brailleBuffer.pop();
-        updateUI();
+        const lastChar=out.value.slice(-1);if(!isBlindMode)speak("حذف "+lastChar);
+        out.value=out.value.slice(0,-1);brailleBuffer.pop();updateUI();
     }
 }
-
-function handleClearAll(){
-    document.getElementById('output').value="";
-    brailleBuffer=[];
-    updateUI();
-}
-
+function handleClearAll(){document.getElementById('output').value="";brailleBuffer=[];updateUI();}
 function updateUI(){
     document.getElementById('braille-preview').innerText=brailleBuffer.join('');
-    const out=document.getElementById('output');
-    out.scrollTop=out.scrollHeight;
+    const out=document.getElementById('output');out.scrollTop=out.scrollHeight;
 }
-
 document.getElementById('output').addEventListener('input',function(){
     const text=this.value;
-    brailleBuffer=Array.from(text).map(char=>
-        CHARS[char]||(char==='ه'?CHARS['هـ']:'')||
-        HAMZAS[char]||TASHKEEL[char]||PUNCT[char]||NUMS[char]||
-        (/[\u2800-\u28FF]/.test(char)?char:char)
-    );
+    brailleBuffer=Array.from(text).map(char=>CHARS[char]||(char==='ه'?CHARS['هـ']:'')||HAMZAS[char]||TASHKEEL[char]||PUNCT[char]||NUMS[char]||(/[\u2800-\u28FF]/.test(char)?char:char));
     updateUI();
 });
-
-function openPopup(id,name){
-    document.getElementById('overlay').style.display='block';
-    document.getElementById(id).classList.add('active');
-}
-
+function openPopup(id,name){document.getElementById('overlay').style.display='block';document.getElementById(id).classList.add('active');}
 function closeAllPopups(){
     document.querySelectorAll('.popup-menu').forEach(p=>p.classList.remove('active'));
     document.getElementById('language-popup').classList.remove('active');
     document.getElementById('overlay').style.display='none';
 }
-
 function toggleAppMode(){
     isBlindMode=!isBlindMode;
     document.getElementById('keyboard-sighted').style.display=isBlindMode?'none':'grid';
     document.getElementById('keyboard-blind').style.display=isBlindMode?'grid':'none';
-    const msg=isBlindMode?
-        "تم تفعيل وضع الكفيف. استكشف باللمس واضغط مرتين للتنفيذ":
-        "تم تفعيل وضع المبصر. التنفيذ بلمسة واحدة مع النطق";
-    speak(msg);
-    renderAll();
+    const msg=isBlindMode?"تم تفعيل وضع الكفيف. استكشف باللمس واضغط مرتين للتنفيذ":"تم تفعيل وضع المبصر. التنفيذ بلمسة واحدة مع النطق";
+    speak(msg);renderAll();
 }
-
 async function handleCopy(){
     const text=document.getElementById('output').value;
-    try{
-        await navigator.clipboard.writeText(text);
-    }catch(err){
-        const textArea=document.createElement("textarea");
-        textArea.value=text;
-        textArea.style.position="fixed";
-        textArea.style.left="-9999px";
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
+    try{await navigator.clipboard.writeText(text);}
+    catch(err){
+        const textArea=document.createElement("textarea");textArea.value=text;
+        textArea.style.position="fixed";textArea.style.left="-9999px";
+        document.body.appendChild(textArea);textArea.focus();textArea.select();
+        document.execCommand('copy');document.body.removeChild(textArea);
     }
 }
-
 function renderAll(){
-    const sighted=document.getElementById('keyboard-sighted');
-    sighted.innerHTML="";
-
+    const sighted=document.getElementById('keyboard-sighted');sighted.innerHTML="";
     Object.keys(CHARS).forEach(c=>{
-        const btn=document.createElement('div');
-        btn.className="key-s";
+        const btn=document.createElement('div');btn.className="key-s";
         btn.innerHTML=`<span>${c}</span><b>${CHARS[c]}</b>`;
-        btn.onclick=e=>{
-            e.stopPropagation();
-            handleInput(c);
-        };
-        sighted.appendChild(btn);
+        btn.onclick=e=>{e.stopPropagation();handleInput(c);};sighted.appendChild(btn);
     });
-
-    const blind=document.getElementById('keyboard-blind');
-    blind.innerHTML="";
+    const blind=document.getElementById('keyboard-blind');blind.innerHTML="";
     const charKeys=Object.keys(CHARS);
-
     for(let i=0;i<charKeys.length;i+=6){
-        const cluster=document.createElement('div');
-        cluster.className="cluster-main";
+        const cluster=document.createElement('div');cluster.className="cluster-main";
         const chunk=charKeys.slice(i,i+6);
         const clusterRange=`أنت الآن في عنقود دائري من حرف ${chunk[0]} إلى حرف ${chunk[chunk.length-1]}`;
-
-        cluster.onclick=e=>{
-            e.stopPropagation();
-            speak(clusterRange);
-        };
-
+        cluster.onclick=e=>{e.stopPropagation();speak(clusterRange);};
         chunk.forEach((c,index)=>{
-            const sub=document.createElement('div');
-            sub.className=`sub-key pos-${index}`;
-            sub.innerText=c;
-
+            const sub=document.createElement('div');sub.className=`sub-key pos-${index}`;sub.innerText=c;
             sub.onclick=e=>{
                 e.stopPropagation();
                 const fullDesc=`${clusterRange}، وأنت الآن ضغطت على حرف ${c}`;
                 unifiedControl(sub,()=>handleInput(c),fullDesc);
             };
-
             cluster.appendChild(sub);
         });
-
         blind.appendChild(cluster);
     }
-
     const fill=(id,map,type,title)=>{
-        const el=document.getElementById(id);
-        el.innerHTML="";
-
+        const el=document.getElementById(id);el.innerHTML="";
         Object.keys(map).forEach(k=>{
-            const btn=document.createElement('div');
-            btn.className="key-s";
+            const btn=document.createElement('div');btn.className="key-s";
             btn.innerHTML=`<span>${k}</span><b>${map[k]}</b>`;
-
             btn.onclick=e=>{
-                e.stopPropagation();
-                const desc=type==='tashkeel'?NAMES_MAP[k]:k;
+                e.stopPropagation();const desc=type==='tashkeel'?NAMES_MAP[k]:k;
                 unifiedControl(btn,()=>handleInput(k,type),desc);
             };
-
             el.appendChild(btn);
         });
     };
-
     fill('pop-nums',NUMS,'number','رقم');
     fill('pop-tashkeel',TASHKEEL,'tashkeel','تشكيل');
     fill('pop-punct',PUNCT,'punct','ترقيم');
     fill('pop-hamzas',HAMZAS,'hamza','همزة');
 }
-
 function getBrailleForChar(char){
-    return CHARS[char]||(char==='ه'?CHARS['هـ']:'')||
-        HAMZAS[char]||TASHKEEL[char]||PUNCT[char]||NUMS[char]||
-        (/^[\u2800-\u28FF]$/.test(char)?char:'');
+    return CHARS[char]||(char==='ه'?CHARS['هـ']:'')||HAMZAS[char]||TASHKEEL[char]||PUNCT[char]||NUMS[char]||(/^[\u2800-\u28FF]$/.test(char)?char:'');
 }
-
 function getBrailleDots(cell){
     const value=cell.codePointAt(0)-0x2800;
-    const positions=[
-        'أقصى اليسار في الأعلى',
-        'أقصى اليسار في المنتصف',
-        'أقصى اليسار في الأسفل',
-        'أقصى اليمين في الأعلى',
-        'أقصى اليمين في المنتصف',
-        'أقصى اليمين في الأسفل'
-    ];
-
+    const positions=['أقصى اليسار في الأعلى','أقصى اليسار في المنتصف','أقصى اليسار في الأسفل','أقصى اليمين في الأعلى','أقصى اليمين في المنتصف','أقصى اليمين في الأسفل'];
     const dots=[];
-    for(let i=0;i<6;i++){
-        if(value&(1<<i)){
-            dots.push({number:i+1,position:positions[i]});
-        }
-    }
+    for(let i=0;i<6;i++){if(value&(1<<i))dots.push({number:i+1,position:positions[i]});}
     return dots;
 }
-
 function describeBrailleCell(cell,cellNumber){
     const dots=getBrailleDots(cell);
     let speech=`الخلية رقم ${cellNumber}. عدد النقاط البارزة فيها ${dots.length} نقطة. `;
-
-    if(dots.length===0){
-        speech+='لا توجد نقاط بارزة في هذه الخلية. ';
-    }else{
-        dots.forEach(dot=>{
-            speech+=`النقطة رقم ${dot.number} في ${dot.position}. `;
-        });
-    }
-
+    if(dots.length===0)speech+='لا توجد نقاط بارزة في هذه الخلية. ';
+    else dots.forEach(dot=>{speech+=`النقطة رقم ${dot.number} في ${dot.position}. `;});
     return {speech:speech,dotsCount:dots.length};
 }
-
 function speakBrailleSequence(parts){
-    window.speechSynthesis.cancel();
-    let index=0;
-
+    window.speechSynthesis.cancel();let index=0;
     function speakNext(){
         if(index>=parts.length)return;
-
         const utterance=new SpeechSynthesisUtterance(parts[index]);
-        utterance.lang='ar-SA';
-        utterance.rate=.9;
-
-        utterance.onend=()=>{
-            index++;
-            speakNext();
-        };
-
-        utterance.onerror=()=>{
-            index++;
-            speakNext();
-        };
-
+        utterance.lang='ar-SA';utterance.rate=.9;
+        utterance.onend=()=>{index++;speakNext();};
+        utterance.onerror=()=>{index++;speakNext();};
         window.speechSynthesis.speak(utterance);
     }
-
     speakNext();
 }
-
 function speakBrailleCount(){
     const text=document.getElementById('output').value;
-
-    if(!text.trim()){
-        speak('لا يوجد نص لحساب نقاط برايل.');
-        return;
-    }
-
+    if(!text.trim()){speak('لا يوجد نص لحساب نقاط برايل.');return;}
     let totalCells=0,totalDots=0,speechParts=[];
     const characters=Array.from(text);
-
     characters.forEach(char=>{
         if(char===' ')return;
-
-        const brailleCode=getBrailleForChar(char);
-        if(!brailleCode)return;
-
+        const brailleCode=getBrailleForChar(char);if(!brailleCode)return;
         const cells=Array.from(brailleCode).filter(cell=>/^[\u2800-\u28FF]$/.test(cell));
         if(cells.length===0)return;
-
         const characterName=NAMES_MAP[char]||char;
         speechParts.push(`الحرف ${characterName}. رمز برايل المقابل له هو ${brailleCode}.`);
-
         let characterDots=0;
-
         cells.forEach((cell,index)=>{
-            totalCells++;
-            const result=describeBrailleCell(cell,index+1);
-            characterDots+=result.dotsCount;
-            totalDots+=result.dotsCount;
-            speechParts.push(result.speech);
+            totalCells++;const result=describeBrailleCell(cell,index+1);
+            characterDots+=result.dotsCount;totalDots+=result.dotsCount;speechParts.push(result.speech);
         });
-
         speechParts.push(`إجمالي النقاط البارزة في الحرف ${characterName} هو ${characterDots} نقطة.`);
     });
-
-    if(totalCells===0){
-        speak('لم أجد خلايا برايل معروفة في النص.');
-        return;
-    }
-
+    if(totalCells===0){speak('لم أجد خلايا برايل معروفة في النص.');return;}
     speechParts.push(`انتهى عد الحروف. إجمالي خلايا برايل في النص هو ${totalCells} خلية.`);
     speechParts.push(`إجمالي النقاط البارزة في النص كله هو ${totalDots} نقطة.`);
-
     speakBrailleSequence(speechParts);
 }
-
 /* نافذة معجم اللغة العربية */
 function openLanguagePopup(){
     document.getElementById('overlay').style.display='block';
     document.getElementById('language-popup').classList.add('active');
 }
-
 function closeLanguagePopup(){
     document.getElementById('language-popup').classList.remove('active');
-
     const otherPopups=document.querySelectorAll('.popup-menu.active');
-
-    if(otherPopups.length===0){
-        document.getElementById('overlay').style.display='none';
-    }
+    if(otherPopups.length===0)document.getElementById('overlay').style.display='none';
 }
-
 function handleExport(){
-    const text=document.getElementById('output').value;
-    if(!text)return;
-
+    const text=document.getElementById('output').value;if(!text)return;
     const {Document,Packer,Paragraph,TextRun}=docx;
-
     const doc=new Document({
         sections:[{
             properties:{page:{margin:{top:1000,right:1000,bottom:1000,left:1000}}},
             children:[
-                new Paragraph({
-                    children:[
-                        new TextRun({
-                            text:"Braille & Arabic 2026",
-                            bold:true,
-                            size:32,
-                            rightToLeft:false
-                        })
-                    ],
-                    alignment:"center"
-                }),
-
+                new Paragraph({children:[new TextRun({text:"Braille & Arabic 2026",bold:true,size:32,rightToLeft:false})],alignment:"center"}),
                 new Paragraph({text:""}),
-
-                new Paragraph({
-                    children:[
-                        new TextRun({text:"النص العربي: ",bold:true,rightToLeft:true}),
-                        new TextRun({text:text,rightToLeft:true})
-                    ],
-                    alignment:"right",
-                    bidirectional:true
-                }),
-
-                new Paragraph({
-                    children:[
-                        new TextRun({text:"نص برايل: ",bold:true,rightToLeft:true}),
-                        new TextRun({text:brailleBuffer.join(''),rightToLeft:false})
-                    ],
-                    alignment:"right",
-                    bidirectional:true
-                })
+                new Paragraph({children:[
+                    new TextRun({text:"النص العربي: ",bold:true,rightToLeft:true}),
+                    new TextRun({text:text,rightToLeft:true})
+                ],alignment:"right",bidirectional:true}),
+                new Paragraph({children:[
+                    new TextRun({text:"نص برايل: ",bold:true,rightToLeft:true}),
+                    new TextRun({text:brailleBuffer.join(''),rightToLeft:false})
+                ],alignment:"right",bidirectional:true})
             ]
         }]
     });
-
-    Packer.toBlob(doc).then(blob=>
-        saveAs(blob,"Braille_Arabic_2026.docx")
-    );
+    Packer.toBlob(doc).then(blob=>saveAs(blob,"Braille_Arabic_2026.docx"));
 }
-
 function speakAll(){
     const t=document.getElementById('output').value;
     speak(t||"لا يوجد نص مكتوب حالياً");
 }
-
 renderAll();
 </script>
 </body>
